@@ -32,15 +32,19 @@ namespace MyInMemoryTest
         [Test]
         public async Task find_海外企業開發組()
         {
-            var employeeDto1 = new EmployeeDto() { Department = DepartmentEnum.海外企業開發組, FirstName = "Cassell", LastName = "Wang" };
-            var employeeDto2 = new EmployeeDto() { Department = DepartmentEnum.海外企業開發組, FirstName = "James", LastName = "Wang" };
-            var employeeDto3 = new EmployeeDto() { Department = DepartmentEnum.火箭隊與她快樂夥伴, FirstName = "Elena", LastName = "Wang" };
-            await _employeeRepository.AddAsync(employeeDto1);
-            await _employeeRepository.AddAsync(employeeDto2);
-            await _employeeRepository.AddAsync(employeeDto3);
-
+            this.SetDefaultData();
             var employees = await _employeeRepository.FindByDepartmentId(DepartmentEnum.海外企業開發組);
             employees.Count().Should().Be(2);
+        }
+
+        private void SetDefaultData()
+        {
+            List<Employee> defaultEmployees = new List<Employee>() {
+                new Employee { DepartmentId = (int)DepartmentEnum.海外企業開發組, Name = "Cassell Wang" },
+                new Employee { DepartmentId = (int)DepartmentEnum.海外企業開發組, Name = "James Wang" },
+                new Employee { DepartmentId = (int)DepartmentEnum.火箭隊與她快樂夥伴, Name = "Elena Wang" }};
+            _testDBContext.Employees.AddRange(defaultEmployees);
+            _testDBContext.SaveChanges();
         }
 
         private IEmployeeRepository GetInMemoryRepository()
