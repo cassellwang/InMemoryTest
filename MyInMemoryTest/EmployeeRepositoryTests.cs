@@ -23,7 +23,7 @@ namespace MyInMemoryTest
         [Test]
         public void add_a_employee()
         {
-            var employeeDto = new EmployeeDto() { Department = DepartmentEnum.火箭隊與她快樂夥伴, FirstName = "Elena", LastName = "Wang" };
+            var employeeDto = new EmployeeDto() { Department = DepartmentEnum.海外企業開發組, FirstName = "Elena", LastName = "Wang" };
             _employeeRepository.AddAsync(employeeDto);
 
             _testDBContext.Employees.Where(x => x.Id == 1).First().Name.Should().Be("Elena Wang");
@@ -54,6 +54,7 @@ namespace MyInMemoryTest
                 .Options;
 
             _testDBContext = new EmployeeContext(options);
+            _testDBContext.Database.EnsureDeleted();
             var repository = new EmployeeRepository(_testDBContext);
 
             return repository;
